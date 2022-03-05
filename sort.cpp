@@ -50,21 +50,49 @@ void insertion_sort(char** A, int l, int r)
 
 void insertion_sort_digit(char** A, int* A_len, int l, int r, int d)
 {
+    
+    int i;
+    char* key;
+    //sort charactes for position d
+    int key_len;
+    char A_digits;
+    char key_digits;
+    //find the char of char
+    for(int j=l+1; j<=r; j++){
+        key= A[j];
+        //gets the length of A[j]
+        key_len= A_len[j];
+        i=j-1;
+        
+        
+        
+    }
 
 }
 
 void counting_sort_digit(char** A, int* A_len, char** B, int* B_len, int n, int d)
 {
 
+
 }
 
 void radix_sort_is(char** A, int* A_len, int n, int m)
 { 
-
+    for(int i=m-1; i>0;i++){
+        //grab the insertionsort_digit recursively
+        insertion_sort_digit(A,A_len, 0, n-1,i);
+    }
 }
 
 void radix_sort_cs(char** A, int* A_len, int n, int m)
-{ 
+{
+    //declare variables used above to call counting sort digit recursively
+    char** B;
+    int* B_len;
+    B=new char* [n];
+    B_len = new int[n];
+    char
+    
 
 }
 
