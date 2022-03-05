@@ -72,6 +72,38 @@ void insertion_sort_digit(char** A, int* A_len, int l, int r, int d)
 
 void counting_sort_digit(char** A, int* A_len, char** B, int* B_len, int n, int d)
 {
+    int i;
+    //Step 1 Create new array
+    int counting[256/*not sure what to put in here*/];
+    
+    //first loop that counts
+    for(i=0;i<256;i++){
+        counting[i]=0;
+    }
+    //update new array
+    for(int j=0; j<n; j++){
+        counting[A[j][d]] = counting[A[j][d]]+1;
+    }
+    else{
+        counting[0] = counting[0]+1;
+                 }
+    
+    for(int i=0;i<256;i++){
+        counting[i]= counting[i]+counting[0];
+    }
+    for(int j=n-1;j>=0;j--){
+        if(B_len[j]>= d){
+            B_len[counting[A[j][d]]-1] = A_len[j];
+            B[counting[A[j][d]]-1] =A[j];
+                 
+            //decrement array
+            counting[A[j][d] = counting[A[j][d]]-1;
+                 
+            }
+                 
+        }
+                 
+    
 
 
 }
