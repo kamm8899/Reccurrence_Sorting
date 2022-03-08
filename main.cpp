@@ -72,6 +72,15 @@ int main(int argc, char* argv[])
 		cout << "Running radix sort with insertion sort algorithm: " << endl;
 		t.start();
 		radix_sort_is(input_array, input_length, n, m);
+//        cout<< "Before"<<endl;
+//        for (int i = 0; (i < n) && (i < 20); i++)
+//          cout << input_array[i] << endl;
+//        cout << endl;
+//        insertion_sort_digit(input_array, input_length, n, m, 0);
+//        cout<< "After"<<endl;
+//        for (int i = 0; (i < n) && (i < 20); i++)
+//          cout << input_array[i] << endl;
+//        cout << endl;
 		t.stop();
 	} 
 	else
@@ -92,15 +101,15 @@ int main(int argc, char* argv[])
 	else
 		cout << "ERROR: The output is not sorted!" << endl;
 
-	  // for (int i = 0; (i < n) && (i < 20); i++)
-	  //   cout << input_array[i] << endl;
-	  // cout << endl;
+//	   for (int i = 0; (i < n) && (i < 20); i++)
+//	     cout << input_array[i] << endl;
+//	   cout << endl;
 
 	/*
 	 * free allocated storage
 	 */
 	for (int i = 0; i < n; i++)
-		delete[] input_array[i];
+    delete[] input_array[i];
 	delete[] input_array;
 	delete[] input_length;
 

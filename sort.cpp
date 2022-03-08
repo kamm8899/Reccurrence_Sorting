@@ -1,5 +1,7 @@
 #include <cstdio>
 #include <cstdlib>
+#include <iostream>
+using namespace std;
 
 #include "sort.h"
 #include <string.h>
@@ -53,21 +55,27 @@ void insertion_sort_digit(char** A, int* A_len, int l, int r, int d)
 {
     //
     int i;
-    char* key;
+    char key;
     
+    //cout<<*A_len<<endl;
     for( int j= l+1;j<=r;j++){
         //"abcd" d=0
-        //flip the position from left to right
-       int keyDigit = strlen(A[j])-(1+d);
-        key=A[j][keyDigit];
-        i = j-1;
-        int otherDigit = strlen(A[i])-(1+d);
+        //"abcde"
         
-        while((i>=l)&& (string_compare(A[i][otherDigit],key)>0)){
-            
-            
+        //flip the position from left to right
+       int keyDigit = (int) *A_len -(2+d);
+        key=(A[j][keyDigit]);
+        i = j-1;
+        int otherDigit = (int) *A_len-(2+d);
+
+        while((i>=l)&& (A[i][otherDigit] == key)){
+            A[i+1]= A[i];
+            i=i-1;
+
         }
+        A[i+1]= A[j];
     }
+    
 
     
 
@@ -80,7 +88,7 @@ void counting_sort_digit(char** A, int* A_len, char** B, int* B_len, int n, int 
 {
 //    int i;
 //    //Step 1 Create new array
-//    int counting[256/*not sure what to put in here*/];
+//    int counting[256];
 //
 //    //first loop that counts
 //    for(i=0;i<256;i++){
@@ -117,8 +125,10 @@ void counting_sort_digit(char** A, int* A_len, char** B, int* B_len, int n, int 
 }
 
 void radix_sort_is(char** A, int* A_len, int n, int m)
-{ 
-    for(int i=m-1; i>0;i++){
+{
+    cout<<"Hello"<<endl;
+    for(int i=0; i<*A_len;i++){
+        
         //grab the insertionsort_digit recursively
         insertion_sort_digit(A,A_len, 0, n-1,i);
     }
