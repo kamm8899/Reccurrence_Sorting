@@ -86,48 +86,48 @@ void insertion_sort_digit(char** A, int* A_len, int l, int r, int d)
 
 void counting_sort_digit(char** A, int* A_len, char** B, int* B_len, int n, int d)
 {
-//    int i;
-//    //Step 1 Create new array
-//    int counting[256];
-//
-//    //first loop that counts
-//    for(i=0;i<256;i++){
-//        counting[i]=0;
-//    }
-//    //update new array
-//    for(int j=0; j<n; j++){
-//        counting[A[j][d]] = counting[A[j][d]]+1;
-//    }
-//    else{
-//        counting[0] = counting[0]+1;
-//                 }
-//
-//    for(int i=0;i<256;i++){
-//        counting[i]= counting[i]+counting[0];
-//    }
-//    //copy elements and move back to array
-//    for(int j=n-1;j>=0;j--){
-//        if(B_len[j]>= d){
-//            B_len[counting[A[j][d]]-1] = A_len[j];
-//            B[counting[A[j][d]]-1] =A[j];
-//
-//            //decrement array
-//            counting[A[j][d] = counting[A[j][d]]-1;
-//
-//            }
-//
-//
-//        }
+    int i;
+    //Step 1 Create new array
+    int counting[256];
+
+    //first loop that counts
+    for(i=0;i<256;i++){
+        counting[i]=0;
+    }
+    //update new array
+    for(int j=0; j<n; j++){
+        counting[A[j][d]] = counting[A[j][d]]+1;
+    }
+    else{
+        counting[0] = counting[0]+1;
+                 }
+
+    for(int i=0;i<256;i++){
+        counting[i]= counting[i]+counting[0];
+    }
+    //copy elements and move back to array
+    for(int j=n-1;j>=0;j--){
+        if(B_len[j]>= d){
+            B_len[counting[A[j][d]]-1] = A_len[j];
+            B[counting[A[j][d]]-1] =A[j];
+
+            //decrement array
+            counting[A[j][d] = counting[A[j][d]]-1;
+
+            }
+
+
+        }
                  
     
-
+                     delete[] counting;
 
 }
 
 void radix_sort_is(char** A, int* A_len, int n, int m)
 {
     cout<<"Hello"<<endl;
-    for(int i=0; i<*A_len;i++){
+    for(int i=0; i>0;i++){
         
         //grab the insertionsort_digit recursively
         insertion_sort_digit(A,A_len, 0, n-1,i);
@@ -137,11 +137,19 @@ void radix_sort_is(char** A, int* A_len, int n, int m)
 void radix_sort_cs(char** A, int* A_len, int n, int m)
 {
 
-    for(int i=m-1;i>0;i++){
+char** newArray = new char*[n];
+int* newArrayLength= new int[n];
+                     
+
+    for(int i=m;i>0;i--){
         //grab the countingsort_digit recursively
-//        counting_sort_digit(A,A_len,B, B_len,n-1,i)
+                     counting_sort_digit(A,A_len,newArray, newArrayLength,n,i);
         
     }
+    //used for memory to speed up running time
+    delete[] newArray;
+    delete[] newArrayLength;
+                     
     
 
 }
