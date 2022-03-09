@@ -51,46 +51,14 @@ void insertion_sort(char** A, int l, int r)
     }
 }
 
-int letter_compare_digit(char* s1, char* s2, int A_len, int k_len, int d){
-    //following info from string compare
-    /*
-     * We assume that s1 and s2 are non-null pointers
-     */
-    if(d<= A_len && d<=k_len){
-        //checking if d position is valid
-        if(s1[d-1] == s2[d-1]){
-            return 0;
-        }
-        else{
-            if(s1[d-1] < s2[d-1]){
-                return -1;
-            }
-            else{
-                return 1;
-            }
-        }
-    }
-    else if(d> A_len && d>k_len){
-        //condition when d is not in string
-        return 0;
-    }
-    else{
-        if(d>A_len && d<= k_len){
-            return -1;
-        }
-        else if(d<k_len && d<= A_len){
-            return 1;
-        }
-    }
-}
 
-void insertion_sort_digit(char** A, int* A_len, int l, int r, int d)
-{
+void insertion_sort_digit(char** A, int* A_len, int l, int r, int d){
     //initialize variables
     int i;
     char* key;
     int k_len;
     
+    char A_i_d, key_d;
     //cout<<*A_len<<endl;
     for( int j= l+1;j<=r;j++){
         //"abcd" d=0
@@ -102,65 +70,67 @@ void insertion_sort_digit(char** A, int* A_len, int l, int r, int d)
 //        key=(A[j][keyDigit]);
         i = j-1;
         
+        A_i_d = (A_len[i]<d) ? 0: A[i][d];
+        key_d = (k_len<d) ? 0 : key[d];
 
-        while((i>=l)&& (letter_compare_digit(A[i], key, A_len[i],k_len, d) > 0)){
+        while((i>=l)&& (A_i_d> key_d)){
             A[i+1]= A[i];
             A_len[i+1] = A_len[i];
             i=i-1;
-
+            if (i>=l)
+                A_i_d =(A_len[i]<d) ? 0: A[i][d];
         }
-        A[i+1]= A[j];
-        A_len[i+1]= k_len;
+            A[i+1]= A[i];
+            A_len[i+1]= k_len;
+        }
+
     }
-}
 
 
-void counting_sort_digit(char** A, int* A_len, char** B, int* B_len, int n, int d)
-{
-    int i;
+
+void counting_sort_digit(char** A, int* A_len, char** B, int* B_len, int n, int d){
+//int i;
     //Step 1 Create new array
     int counting[256];
     
 
     //first loop that counts
-    for(i=0;i<256;i++){
+    for(int i=0;i<256;i++){
         counting[i]=0;
     }
     //update new array
     for(int j=0; j<n; j++){
-        counting[A[j][d]] = counting[A[j][d]]+1;
-    }
-    else{
-        counting[0] = counting[0]+1;
+        if (A_len[j]>=d){
+            counting[A[j][d]] = counting[A[j][d]]+1;
         }
+        else{
+            counting[0] = counting[0]+1;
+        }
+    }
 
     for(int i=0;i<256;i++){
-        counting[i]= counting[i]+counting[0];
+        counting[i]= counting[i]+counting[i-1];
     }
     //copy elements and move back to array
     for(int j=n-1;j>=0;j--){
-        if(B_len[j]>= d){
+        if(A_len[j]> d){
             B_len[counting[A[j][d]]-1] = A_len[j];
             B[counting[A[j][d]]-1] =A[j];
 
             //decrement array
-            counting[A[j][d] = counting[A[j][d]]-1;
-
+            counting[A[j][d]] = counting[A[j][d]]-1;
             }
-
-
+        else{
+            B_len[counting[0]-1]=A_len[j];
+            B[counting[0]-1]= A[j];
+            counting[0]--;
         }
-                 
+        }
+    }
     
-        delete[] counting;
-
-}
-
-void radix_sort_is(char** A, int* A_len, int n, int m)
-{
-    cout<<"Hello"<<endl;
+void radix_sort_is(char** A, int* A_len, int n, int m){
     //should this be m-1 or m?
-    for(int i=m; i>0;i++){
+    for(int i=m-1; i>=0;i++){
         
         //grab the insertionsort_digit recursively
         insertion_sort_digit(A,A_len, 0, n-1,i);
@@ -170,21 +140,38 @@ void radix_sort_is(char** A, int* A_len, int n, int m)
 void radix_sort_cs(char** A, int* A_len, int n, int m)
 {
 
-char** newArray = new char*[n];
-int* newArrayLength= new int[n];
-                     
-
-    for(int i=m;i>0;i--){
-        //grab the countingsort_digit recursively
-                     counting_sort_digit(A,A_len,newArray, newArrayLength,n,i);
-        
-    }
-    //used for memory to speed up running time
-    delete[] newArray;
-    delete[] newArrayLength;
-                     
+    char** B = new char*[n]; //B
+    int* B_len = new int[n]; //B_len
+    char** temp_A;
+    int* temp_A_len;
+    char** temp_B;
+    int* temp_B_len;
+    char** temp;
+    int* temp_len;
     
+    temp_A = A;
+    temp_A_len = A_len;
+    temp_B = B;
+    temp_B_len = B_len;
 
+    for(int i=m-1;i>=0;i--){
+        //grab the countingsort_digit recursively
+        counting_sort_digit(temp_A, temp_A_len, temp_B, temp_B_len,n,i);
+        temp = temp_A;
+        temp_A = temp_B;
+        temp_B = temp;
+        
+        temp_len = temp_A_len;
+        temp_A_len = temp_B_len;
+        temp_B_len = temp_len;
+    }
+                         
+    for(int i=0;i<n;i++){
+        A[i]=temp_A[i];
+        A_len[i]=temp_A_len[i];
+    }
+    delete[] B;
+    delete[] B_len;
 }
 
 /*
