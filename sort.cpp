@@ -51,11 +51,45 @@ void insertion_sort(char** A, int l, int r)
     }
 }
 
+int letter_compare_digit(char* s1, char* s2, int A_len, int k_len, int d){
+    //following info from string compare
+    /*
+     * We assume that s1 and s2 are non-null pointers
+     */
+    if(d<= A_len && d<=k_len){
+        //checking if d position is valid
+        if(s1[d-1] == s2[d-1]){
+            return 0;
+        }
+        else{
+            if(s1[d-1] < s2[d-1]){
+                return -1;
+            }
+            else{
+                return 1;
+            }
+        }
+    }
+    else if(d> A_len && d>k_len){
+        //condition when d is not in string
+        return 0;
+    }
+    else{
+        if(d>A_len && d<= k_len){
+            return -1;
+        }
+        else if(d<k_len && d<= A_len){
+            return 1;
+        }
+    }
+}
+
 void insertion_sort_digit(char** A, int* A_len, int l, int r, int d)
 {
-    //
+    //initialize variables
     int i;
-    char key;
+    char* key;
+    int k_len;
     
     //cout<<*A_len<<endl;
     for( int j= l+1;j<=r;j++){
@@ -63,24 +97,21 @@ void insertion_sort_digit(char** A, int* A_len, int l, int r, int d)
         //"abcde"
         
         //flip the position from left to right
-       int keyDigit = (int) *A_len -(2+d);
-        key=(A[j][keyDigit]);
+        key = A[j];
+        k_len= A_len[j];
+//        key=(A[j][keyDigit]);
         i = j-1;
-        int otherDigit = (int) *A_len-(2+d);
+        
 
-        while((i>=l)&& (A[i][otherDigit] == key)){
+        while((i>=l)&& (letter_compare_digit(A[i], key, A_len[i],k_len, d) > 0)){
             A[i+1]= A[i];
+            A_len[i+1] = A_len[i];
             i=i-1;
 
         }
         A[i+1]= A[j];
+        A_len[i+1]= k_len;
     }
-    
-
-    
-
-
-
 }
 
 
@@ -89,6 +120,7 @@ void counting_sort_digit(char** A, int* A_len, char** B, int* B_len, int n, int 
     int i;
     //Step 1 Create new array
     int counting[256];
+    
 
     //first loop that counts
     for(i=0;i<256;i++){
@@ -100,7 +132,7 @@ void counting_sort_digit(char** A, int* A_len, char** B, int* B_len, int n, int 
     }
     else{
         counting[0] = counting[0]+1;
-                 }
+        }
 
     for(int i=0;i<256;i++){
         counting[i]= counting[i]+counting[0];
@@ -120,14 +152,15 @@ void counting_sort_digit(char** A, int* A_len, char** B, int* B_len, int n, int 
         }
                  
     
-                     delete[] counting;
+        delete[] counting;
 
 }
 
 void radix_sort_is(char** A, int* A_len, int n, int m)
 {
     cout<<"Hello"<<endl;
-    for(int i=0; i>0;i++){
+    //should this be m-1 or m?
+    for(int i=m; i>0;i++){
         
         //grab the insertionsort_digit recursively
         insertion_sort_digit(A,A_len, 0, n-1,i);
