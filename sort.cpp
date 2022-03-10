@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <cstdlib>
-#include <iostream>
-using namespace std;
+
+
 
 #include "sort.h"
 #include <string.h>
@@ -108,7 +108,7 @@ void counting_sort_digit(char** A, int* A_len, char** B, int* B_len, int n, int 
         }
     }
 
-    for(int i=0;i<256;i++){
+    for(int i=1;i<256;i++){
         counting[i]= counting[i]+counting[i-1];
     }
     //copy elements and move back to array
