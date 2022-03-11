@@ -4,13 +4,13 @@
 
 
 #include "sort.h"
-#include <string.h>
 
-/* 
+
+/*
  * HW 2 part
  */
 int string_compare(char* s1, char *s2)
-{ 
+{
 /*
  * We assume that s1 and s2 are non-null pointers
  */
@@ -25,14 +25,14 @@ int string_compare(char* s1, char *s2)
   else
     {
       if (s1[i] < s2[i])
-	return -1;
+    return -1;
       else
-	return 1;
+    return 1;
     }
 } /*>>>*/
 
 void insertion_sort(char** A, int l, int r)
-{ 
+{
   int i;
   char* key;
 
@@ -43,9 +43,9 @@ void insertion_sort(char** A, int l, int r)
 
       while ((i >= l) && (string_compare(A[i], key) > 0))
         {
-	  A[i+1] = A[i];
-	  i = i - 1;
-	}
+      A[i+1] = A[i];
+      i = i - 1;
+    }
 
       A[i+1] = key;
     }
@@ -54,37 +54,38 @@ void insertion_sort(char** A, int l, int r)
 
 void insertion_sort_digit(char** A, int* A_len, int l, int r, int d){
     //initialize variables
-    int i;
-    char* key;
-    int k_len;
-    
-    char A_i_d, key_d;
-    //cout<<*A_len<<endl;
-    for( int j= l+1;j<=r;j++){
-        //"abcd" d=0
-        //"abcde"
-        
-        //flip the position from left to right
-        key = A[j];
-        k_len= A_len[j];
-//        key=(A[j][keyDigit]);
-        i = j-1;
-        
-        A_i_d = (A_len[i]<d) ? 0: A[i][d];
-        key_d = (k_len<d) ? 0 : key[d];
+       int i;
+       char* key;
+       int k_len;
+       
+       char A_i_d, key_d;
+       //cout<<*A_len<<endl;
+       for( int j= l+1;j<=r;j++){
+           //"abcd" d=0
+           //"abcde"
+           
+           //flip the position from left to right
+           key = A[j];
+           k_len= A_len[j];
+   //        key=(A[j][keyDigit]);
+           i = j-1;
+           
+           A_i_d = (A_len[i]<d) ? 0: A[i][d];
+           key_d = (k_len<d) ? 0 : key[d];
 
-        while((i>=l)&& (A_i_d> key_d)){
-            A[i+1]= A[i];
-            A_len[i+1] = A_len[i];
-            i=i-1;
-            if (i>=l)
-                A_i_d =(A_len[i]<d) ? 0: A[i][d];
-        }
-            A[i+1]= A[i];
-            A_len[i+1]= k_len;
-        }
+           while((i>=l)&& (A_i_d> key_d))
+           {
+               A[i+1]= A[i];
+               A_len[i+1] = A_len[i];
+               i=i-1;
+               if (i >= l)
+                 A_i_d = (A_len[i] < d) ? 0 : A[i][d];
+           }
+               A[i+1]= key;
+               A_len[i+1]= k_len;
+           }
 
-    }
+       }
 
 
 
@@ -130,7 +131,7 @@ void counting_sort_digit(char** A, int* A_len, char** B, int* B_len, int n, int 
     
 void radix_sort_is(char** A, int* A_len, int n, int m){
     //should this be m-1 or m?
-    for(int i=m-1; i>=0;i++){
+    for(int i=m-1; i>=0;i--){
         
         //grab the insertionsort_digit recursively
         insertion_sort_digit(A,A_len, 0, n-1,i);
@@ -143,9 +144,9 @@ void radix_sort_cs(char** A, int* A_len, int n, int m)
     char** B = new char*[n]; //B
     int* B_len = new int[n]; //B_len
     char** temp_A;
-    int* temp_A_len;
+    int *temp_A_len;
     char** temp_B;
-    int* temp_B_len;
+    int *temp_B_len;
     char** temp;
     int* temp_len;
     
@@ -176,7 +177,7 @@ void radix_sort_cs(char** A, int* A_len, int n, int m)
 
 /*
  * Simple function to check that our sorting algorithm did work
- * -> problem, if we find position, where the (i-1)-th element is 
+ * -> problem, if we find position, where the (i-1)-th element is
  *    greater than the i-th element.
  */
 bool check_sorted(char** A, int l, int r)
